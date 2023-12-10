@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Jeu
 {
-
-
-internal class Dictionnaire
+    internal class Dictionnaire
     {
-private List<string> mots;
+
+        private List<string> mots;
 
         public Dictionnaire(string cheminFichier)
         {
@@ -75,7 +74,8 @@ private List<string> mots;
                 Tri_quicksort(pivotIndex + 1, fin);
             }
         }
-         private int Partition(int debut, int fin)
+
+        private int Partition(int debut, int fin)
         {
             string pivot = mots[fin];
             int i = debut - 1;
@@ -99,5 +99,5 @@ private List<string> mots;
             mots[i] = mots[j];
             mots[j] = temp;
         }
-}
+    }
 }
