@@ -1,3 +1,6 @@
+
+internal class Dictionnaire
+    {
 private List<string> mots;
 
         public Dictionnaire(string cheminFichier)
@@ -87,3 +90,4 @@ private List<string> mots;
             mots[i] = mots[j];
             mots[j] = temp;
         }
+}
