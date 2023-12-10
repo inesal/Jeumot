@@ -53,3 +53,37 @@ private List<string> mots;
                 return RechDichoRecursif(mot, milieu + 1, fin);
             }
         }
+
+        private void Tri_quicksort(int debut, int fin)
+        {
+            if (debut < fin)
+            {
+                int pivotIndex = Partition(debut, fin);
+                Tri_quicksort(debut, pivotIndex - 1);
+                Tri_quicksort(pivotIndex + 1, fin);
+            }
+        }
+         private int Partition(int debut, int fin)
+        {
+            string pivot = mots[fin];
+            int i = debut - 1;
+
+            for (int j = debut; j < fin; j++)
+            {
+                if (string.Compare(mots[j], pivot, StringComparison.OrdinalIgnoreCase) <= 0)
+                {
+                    i++;
+                    Echanger(i, j);
+                }
+            }
+
+            Echanger(i + 1, fin);
+            return i + 1;
+        }
+
+        private void Echanger(int i, int j)
+        {
+            var temp = mots[i];
+            mots[i] = mots[j];
+            mots[j] = temp;
+        }
