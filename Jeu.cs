@@ -31,6 +31,7 @@ namespace ProjetAlgoMotGliss
 
             timerJeu = new System.Timers.Timer(tempsTour * 1000);
             timerJeu.Elapsed += OnTourTermine; // temps ecoulé
+
         }
 
         public void AjouterJoueur(string nom)
@@ -49,17 +50,14 @@ namespace ProjetAlgoMotGliss
             jeuEnCours = true;
             joueurActuelIndex = 0;
 
-            chronometre = new Thread(ChronometreThread);
-            
-            chronometre.Start();
             LancerTour();
         }
 
-        private void ChronometreThread(Thread chronometre )
+        private void ChronometreThread()
         {
             while (jeuEnCours)
             {
-                Console.Write($"\rTemps restant : {tempsTour} secondes ");
+               // Console.Write($"\rTemps restant : {tempsTour} secondes");
                 Thread.Sleep(1000); // Attendre 1 seconde
                 tempsTour--;
 
@@ -68,22 +66,24 @@ namespace ProjetAlgoMotGliss
                 {
                     // Si le temps est écoulé, arrêter le tour
                     OnTourTermine(null, null);
-                    chronometre.Stop();
+                    break;
                 }
-                
             }
+            this.tempsTour = 30;
         }
 
         private void LancerTour()
         {
             if (!jeuEnCours) return;
+            chronometre = new Thread(ChronometreThread);
 
-            Console.WriteLine($"C'est le tour de {joueurs[joueurActuelIndex].Nom}. Vous avez {tempsTour} secondes.");
-
+            
+            Console.WriteLine($"\n C'est le tour de {joueurs[joueurActuelIndex].Nom}.");
+            
             // Afficher l'état actuel du plateau
             Console.WriteLine("État actuel du plateau :");
             Console.WriteLine(plateau.ToString());
-
+            chronometre.Start();
             timerJeu.Start();
         }
 
@@ -91,7 +91,7 @@ namespace ProjetAlgoMotGliss
         private void OnTourTermine(Object timer, ElapsedEventArgs timersource)
         {
             timerJeu.Stop();
-            Console.WriteLine($"Temps écoulé pour {joueurs[joueurActuelIndex].Nom}!");
+            Console.WriteLine($"\n Temps écoulé pour {joueurs[joueurActuelIndex].Nom}!");
 
             joueurActuelIndex = (joueurActuelIndex + 1) % joueurs.Count;
 
@@ -115,7 +115,8 @@ namespace ProjetAlgoMotGliss
                 {
 
                     joueurActuel.Add_Mot(mot);
-                    joueurActuel.Add_Score(joueurActuel.CalculerScoreMot (mot));
+                    joueurActuel.Add_Score(joueurActuel.CalculerScoreMot(mot));
+                    
                     plateau = new Plateau("PlateauFinal.csv");
                     Console.WriteLine(joueurActuel.ToString());
 
