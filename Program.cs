@@ -67,11 +67,12 @@ namespace ProjetAlgoMotGliss
                     }
                     break;
 
+
                     case 2:
                         Console.Write("Entrez le nom du fichier : ");
                         string cheminFichier = Console.ReadLine();
                         plateau = new Plateau(cheminFichier);
-                    Jeu jeuDeMots = new Jeu("Mots_Français.txt", plateau);
+                        Jeu jeuDeMots = new Jeu("Mots_Français.txt", plateau);
 
 
 
