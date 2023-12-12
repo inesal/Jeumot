@@ -1,30 +1,40 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jeu
+namespace ProjetAlgoMotGliss
 {
     internal class Joueur
     {
+
         //attributs
         string nom;
-        string prenom;
         List<string> motsTrouves;
-        int nbPlateau;
         int score;
 
-        //constructeur
-        public Joueur (string nom,string prenom,List<string> motsTrouves, int nbPlateau, int score)
+        //propriétés
+        public string Nom
         {
-            if(nom!=null && nom.Length!=0)
+            get { return nom; }
+            set { nom = value; } //ça sert à quoi de donner accès en écriture pour le nom ?
+        }
+
+        public int Score
+        {
+            get { return score; }
+            set { score = value; }
+        }
+
+        //constructeur
+        public Joueur(string nom)
+        {
+            if (nom != null && nom.Length != 0)
             {
-                this.nom = nom;
-                this.prenom = prenom;
-                this.motsTrouves = null;
-                this.nbPlateau = 0;
-                this.score = 0;
+                Nom = nom;
+                motsTrouves = new List<string>();
+                Score = 0;
             }
             else
             {
@@ -32,66 +42,25 @@ namespace Jeu
             }
         }
 
-        //toString
-        public void toString()
-        {
-            Console.WriteLine("Le joueur " + this.prenom + " " + this.nom+
-                "\n a trouvé les mots suivants");
-            AfficherListe(motsTrouves);
-            Console.WriteLine("Il a effectué " + this.nbPlateau + " parties" +
-                "\n et son score est actuellement de " + this.score);
-        }
-
-        public void AfficherListe(List<string> listeMot)
-        {
-            foreach(string mot in listeMot)
-            {
-                Console.WriteLine(mot);
-            }
-            return;
-        }
-
-        //Propriétés
-        public List<string> MotsTrouves
-        {
-            get { return motsTrouves; }
-            set { motsTrouves = value; }
-        }
-        public int NbPlateau
-        {
-            get { return nbPlateau; }
-            set { nbPlateau = value; }
-        }
-        public int Score
-        {
-            get { return score; }
-            set { score = value; }
-        }
-        public string Prenom
-        {
-            get { return prenom; }
-        }
-        public string Nom
-        {
-            get { return nom; }
-        }
-
-
         public void Add_Mot(string mot)
         {
-            motsTrouves.Add(mot);
+            if (!Contient(mot))
+            {
+                motsTrouves.Add(mot);
+
+            }
         }
 
         public void Add_Score(int val)
         {
-            score += val;
+            Score += val;
         }
 
         public bool Contient(string mot)
         {
-            foreach(string element in motsTrouves)
+            foreach (string element in motsTrouves)
             {
-                if(element==mot)
+                if (element == mot)
                 {
                     Console.WriteLine("Vous avez déjà utilisé ce mot");
                     return true;
@@ -99,5 +68,20 @@ namespace Jeu
             }
             return false;
         }
+
+        public override string ToString()
+        {
+            string result = "";
+            result += $"Nom: {Nom}\n";
+            result += $"Score: {Score}\n";
+            result += "Mots trouvés: ";
+
+            foreach (var mot in motsTrouves)
+            {
+                result += mot + ", ";
+            }
+            return result.Substring(0, result.Length - 2);
+        }
     }
+
 }
