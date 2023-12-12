@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jeu
+namespace ProjetAlgoMotGliss
 {
     internal class Dictionnaire
     {
@@ -38,11 +38,14 @@ namespace Jeu
 
         public bool RechDichoRecursif(string mot)
         {
-            return RechDichoRecursif(mot, 0, mots.Count - 1);
+            return RechDichoRecursif(mot, 0, mots.Count - 1); //état d'entré dans la fonction récursive
         }
+
+
 
         private bool RechDichoRecursif(string mot, int debut, int fin)
         {
+
             if (debut > fin)
             {
                 return false;
