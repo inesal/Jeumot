@@ -54,9 +54,10 @@ namespace ProjetAlgoMotGliss
 
         public int CalculerScoreMot(string mot)
         {
+            
             Dictionary<char, int> val = new Dictionary<char, int>
         {
-            {'a', 1 }, {'b', 2} , {'c' , 4} , {'d' , 5} , { 'e' ,  6} , {'f' , 9} , { 'g' , 2} , {'h' , 1} , {'i' , 3} , {'j' , 1} , {'k', 3} , { 'l' , 2 } , {'m' , 2 } , {'o' , 6} , {'p' , 8} , {'q' , 2} ,{ 'r' , 2} , { 's' , 4} , {'t' , 6} , { 'u' , 1},{'v' , 2} , {'w' , 10} , {'x' , 1} , { 'y' , 7} , {'z' , 10}
+            {'A', 1 }, {'B', 2} , {'C' , 4} , {'D' , 5} , { 'E' ,  6} , {'F' , 9} , { 'G' , 2} , {'H' , 1} , {'I' , 3} , {'J' , 1} , {'K', 3} , { 'L' , 2 } , {'M' , 2 } , {'O' , 6} , {'P' , 8} , {'Q' , 2} ,{ 'R' , 2} , { 'S' , 4} , {'T' , 6} , { 'U' , 1},{'V' , 2} , {'W' , 10} , {'X' , 1} , { 'Y' , 7} , {'Z' , 10}
 
         };
             int scoreMot = 0;
@@ -68,7 +69,8 @@ namespace ProjetAlgoMotGliss
                 if (val.ContainsKey(lettre))
                 {
                     // Ajouter le score de la lettre au score total du mot
-                    scoreMot += val[lettre];
+                    scoreMot += val.GetValueOrDefault(lettre);
+                    Console.WriteLine(scoreMot);
                 }
                 // Vous pouvez également choisir de gérer le cas où la lettre n'est pas présente dans le dictionnaire
             }
