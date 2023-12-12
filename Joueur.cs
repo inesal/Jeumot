@@ -41,21 +41,47 @@ namespace ProjetAlgoMotGliss
                 Console.WriteLine("Le joueur n'a pas de nom");
             }
         }
-
         public void Add_Mot(string mot)
         {
             if (!Contient(mot))
             {
                 motsTrouves.Add(mot);
-
+                // Vous pouvez également mettre à jour le score ici si nécessaire,
+                // par exemple en fonction de la longueur du mot.
             }
         }
 
-        public void Add_Score(int val)
+
+        public int CalculerScoreMot(string mot)
         {
-            Score += val;
+            Dictionary<char, int> val = new Dictionary<char, int>
+        {
+            {'a', 1 }, {'b', 2} , {'c' , 4} , {'d' , 5} , { 'e' ,  6} , {'f' , 9} , { 'g' , 2} , {'h' , 1} , {'i' , 3} , {'j' , 1} , {'k', 3} , { 'l' , 2 } , {'m' , 2 } , {'o' , 6} , {'p' , 8} , {'q' , 2} ,{ 'r' , 2} , { 's' , 4} , {'t' , 6} , { 'u' , 1},{'v' , 2} , {'w' , 10} , {'x' , 1} , { 'y' , 7} , {'z' , 10}
+
+        };
+            int scoreMot = 0;
+
+            // Utiliser un foreach pour parcourir chaque lettre du mot
+            foreach (char lettre in mot)
+            {
+                // Vérifier si la lettre est présente dans le dictionnaire des scores
+                if (val.ContainsKey(lettre))
+                {
+                    // Ajouter le score de la lettre au score total du mot
+                    scoreMot += val[lettre];
+                }
+                // Vous pouvez également choisir de gérer le cas où la lettre n'est pas présente dans le dictionnaire
+            }
+            return scoreMot;
+            
         }
 
+        public void Add_Score( int val)
+        {
+            score += val;
+
+        }
+        
         public bool Contient(string mot)
         {
             foreach (string element in motsTrouves)
