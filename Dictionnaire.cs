@@ -43,8 +43,21 @@ namespace ProjetAlgoMotGliss
         /// <returns>retourne le nombre de mots du dictionnaire et le notre de mots par lettre du dico</returns>
         public override string ToString()
         {
-            return $"Dictionnaire contenant {mots.Count} mots.";
+            string result = "";
+            result += $"Dictionnaire en français contenant {mots.Count} mots \n";
+            result += "Mots par lettre :\n";
+
+            foreach (var groupe in mots
+                .GroupBy(m => char.ToUpper(m[0]))  //regroupe les mots du dictionnaire par la première lettre
+                .OrderBy(g => g.Key))   //ordonne les lignes par rapport au rang de la lettre
+            {
+                result +=$"Lettre {groupe.Key}: {groupe.Count()} mots \n";
+            }
+
+            return result; 
         }
+
+        
         /// <summary>
         /// Recherche récursivement le mot dans le dictionnaire en utilisant la donction recurisve private recherche dichotomique
         /// </summary>
@@ -110,7 +123,9 @@ namespace ProjetAlgoMotGliss
         private int Partition(int debut, int fin)
         {
             string pivot = mots[fin];
-            int i = debut - 1;
+            int i = debut - 1; //position actuelle du pivot dans le tableau
+                               //donc i représente la frontière entre les éléments
+                               //plus petits que le pivot et ceux plus grands
 
             for (int j = debut; j < fin; j++)
             {
@@ -122,7 +137,7 @@ namespace ProjetAlgoMotGliss
             }
 
             Echanger(i + 1, fin);
-            return i + 1;
+            return i + 1; //position finale du pivot
         }
         /// <summary>
         /// Échange les positions de deux éléments
