@@ -96,10 +96,14 @@ namespace ProjetAlgoMotGliss
 
             Console.WriteLine($"Temps écoulé pour {joueurs[joueurActuelIndex].Nom}!");
 
-            joueurActuelIndex = (joueurActuelIndex + 1) % joueurs.Count;
+            joueurActuelIndex = (joueurActuelIndex + 1) % joueurs.Count;  
+            //Cette ligne incrémente l'index du joueur actuel.
+            //Si l'index atteint la fin de la liste des joueurs,
+            //il revient à zéro pour passer au premier joueur.
 
             LancerTour();
         }
+        
         /// <summary>
         /// Vérifie si le mot donné est appartient au dico et au plateau, si c'est le cas , la methode met à jour le score du joueur
         /// </summary>
@@ -125,8 +129,6 @@ namespace ProjetAlgoMotGliss
                     
                     plateau = new Plateau("PlateauFinal.csv");
                     Console.WriteLine(joueurActuel.ToString());
-
-                    // Mettre à jour le score ici en fonction de votre logique de calcul de score
 
                     Console.WriteLine(" \n Mot accepté, continuez");
                 }
