@@ -14,7 +14,12 @@ namespace ProjetAlgoMotGliss
         private char[,] matrice;
         private int lignes;
         private int colonnes;
-
+        /// <summary>
+        /// Constructeur de la classe Plateau avec le nombre spécifié de lignes et de colonnes
+        /// La matrice du plateau est créée avec les dimensions saisies puis le plateau est généré de manière aléatoire
+        /// </summary>
+        /// <param name="lignes">Le nombre de lignes du plateau</param>
+        /// <param name="colonnes">Le nombre de colonnes du plateau</param>
         public Plateau(int lignes, int colonnes)
         {
             this.lignes = lignes;
@@ -22,16 +27,25 @@ namespace ProjetAlgoMotGliss
             matrice = new char[lignes, colonnes];
             GenererPlateauAleatoire();
         }
-
+        /// <summary>
+        /// Constructeur de la classe Plateau à partir d'un fichier spécifique
+        /// </summary>
+        /// <param name="cheminFichier">Le chemin vers le fichier du plateau saisi</param>
         public Plateau(string cheminFichier)
         {
             ChargerDepuisFichier(cheminFichier);
         }
+        /// <summary>
+        /// Obtient la grille actuelle du plateau
+        /// </summary>
+        /// <returns>La grille du plateau avec les lettres actuelles</returns>
         public char[,] GetMatrice()
         {
             return matrice;
         }
-
+        /// <summary>
+        /// Remplit le plateau avec des lettres générées aléatoirement
+        /// </summary>
         private void GenererPlateauAleatoire()
         {
             Random rand = new Random();
@@ -43,7 +57,10 @@ namespace ProjetAlgoMotGliss
                 }
             }
         }
-
+        /// <summary>
+        /// Charge la configuration du plateau à partir d'un fichier spécifié
+        /// </summary>
+        /// <param name="cheminFichier">Le chemin vers le fichier du plateau </param>
         private void ChargerDepuisFichier(string cheminFichier)
         {
             string[] lignesFichier = File.ReadAllLines(cheminFichier);
@@ -85,7 +102,10 @@ namespace ProjetAlgoMotGliss
             }
         }
 
-
+        /// <summary>
+        /// Crée une représentation sous forme de chaîne de caractères du plateau
+        /// </summary>
+        /// <returns>Une chaîne de caractères représentant le contenu actuel du plateau</returns>
 
         public override string ToString()
         {
@@ -100,22 +120,33 @@ namespace ProjetAlgoMotGliss
             }
             return sb.ToString();
         }
-
+        /// <summary>
+        /// Recherche le mot sur le plateau en parcourant de bas en haut
+        /// </summary>
+        /// <param name="mot">Le mot à rechercher sur le plateau</param>
+        /// <returns>True si le mot est trouvé sinon False</returns>
         public bool Recherche_Mot(string mot)
         {
-            // Start from the bottom row and search upwards
+            
             
                 for (int j = 0; j < colonnes; j++)
                 {
-                    if (Recherche_Mot_Recursif(mot, 0, lignes -1, j))
+                    if (Recherche_Mot_Recursif(mot, 0, lignes -1, j)) // commence par le bas vers le haut
                     {
                         return true;
                     }
-               }
+                 }
             
             return false;
         }
-
+        /// <summary>
+        /// Recherche récursivement le mot sur le plateau à partir d'une position donnée
+        /// </summary>
+        /// <param name="mot">Le mot à rechercher</param>
+        /// <param name="motIndex">L'indice actuel dans le mot</param>
+        /// <param name="x">La position actuelle en termes de lignes</param>
+        /// <param name="y">La position actuelle en termes de colonnes</param>
+        /// <returns>True si le mot est trouvé sinon False</returns>
         private bool Recherche_Mot_Recursif(string mot, int motIndex, int x, int y)
         {
             // Check if out of bounds or the cell doesn't match the current letter in the word.
@@ -153,7 +184,10 @@ namespace ProjetAlgoMotGliss
 
             return found;
         }
-
+        /// <summary>
+        /// Sauvegarde la configuration actuelle du plateau dans un fichier 
+        /// </summary>
+        /// <param name="cheminFichier">Le chemin du fichier où sauvegarder le nouveau plateau</param>
         public void SauvegarderDansFichier(string cheminFichier)
         {
             using (StreamWriter file = new StreamWriter(cheminFichier)) // utiliser une classe du system
@@ -168,6 +202,9 @@ namespace ProjetAlgoMotGliss
                 }
             }
         }
+        /// <summary>
+        /// Met à jour le plateau après avoir marqué les cases avec '*' pour dépiler 
+        /// </summary>
         public void Maj_Plateau()
         {
             Random rand = new Random();
