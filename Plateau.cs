@@ -110,17 +110,17 @@ namespace ProjetAlgoMotGliss
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();             // changer streambuilder 
+            string result = "";
             for (int i = 0; i < lignes; i++)
             {
                 for (int j = 0; j < colonnes; j++)
                 {
-                    sb.Append(matrice[i, j] + " ");
+                    result += matrice[i, j] + " ";
                 }
-                sb.AppendLine();
+                result += "\n";
             }
-            return sb.ToString();
-        }
+            return result;
+        }}
         /// <summary>
         /// Recherche le mot sur le plateau en parcourant de bas en haut
         /// </summary>
