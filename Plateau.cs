@@ -39,9 +39,10 @@ namespace ProjetAlgoMotGliss
         /// Obtient la grille actuelle du plateau
         /// </summary>
         /// <returns>La grille du plateau avec les lettres actuelles</returns>
-        public char[,] GetMatrice()
+        
+        public char[,] Matrice
         {
-            return matrice;
+            get { return matrice; }
         }
         /// <summary>
         /// Remplit le plateau avec des lettres générées aléatoirement
