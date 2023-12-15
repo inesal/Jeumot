@@ -15,30 +15,41 @@ namespace ProjetAlgoMotGliss
         private Dictionnaire dictionnaire;
         private Plateau plateau;
         private List<Joueur> joueurs;
-        private System.Timers.Timer timerJeu;
-        private int tempsTour; // Temps par tour en secondes
+        private System.Timers.Timer timerJeu; // peut créer l'ambiguité avec le System.Threading.Timer
         private int joueurActuelIndex;
         private bool jeuEnCours;
-        private Thread chronometre;
+        private int tempsTour;
 
-        public Jeu(string cheminDictionnaire, Plateau plateau , int tempsTour = 30 )
+
+        /// <summary>
+        /// constructeur de la classe Jeu
+        /// </summary>
+        /// <param name="cheminDictionnaire">Le chemin vers le fichier du dictionnaire</param>
+        /// <param name="plateau">Le plateau de jeu initial</param>
+        public Jeu(string cheminDictionnaire, Plateau plateau  )
         {
             dictionnaire = new Dictionnaire(cheminDictionnaire);
             this.plateau = plateau; // Taille du plateau par défaut, peut être ajustée
             joueurs = new List<Joueur>();
-            this.tempsTour = tempsTour;
+            this.tempsTour = 30; // temps fixe car celui qu'on choisit est celui de la partie. Sinon changer signature
             jeuEnCours = false;
+ 
 
-            timerJeu = new System.Timers.Timer(tempsTour * 1000);
+            timerJeu = new System.Timers.Timer(tempsTour*1000);
             timerJeu.Elapsed += OnTourTermine; // temps ecoulé
 
         }
-
+        /// <summary>
+        /// Ajoute un nouveau joueur au jeu
+        /// </summary>
+        /// <param name="nom">Le nom du joueur à ajouter</param>
         public void AjouterJoueur(string nom)
         {
             joueurs.Add(new Joueur(nom));
         }
-
+        /// <summary>
+        /// Démarre le jeu en vérifiant le nombre de joueurs et en lancant le premier tour
+        /// </summary>
         public void DemarrerJeu()
         {
             if (joueurs.Count < 2)
@@ -53,51 +64,46 @@ namespace ProjetAlgoMotGliss
             LancerTour();
         }
 
-        private void ChronometreThread()
-        {
-            while (jeuEnCours)
-            {
-               // Console.Write($"\rTemps restant : {tempsTour} secondes");
-                Thread.Sleep(1000); // Attendre 1 seconde
-                tempsTour--;
 
-
-                if (tempsTour <= 0)
-                {
-                    // Si le temps est écoulé, arrêter le tour
-                    OnTourTermine(null, null);
-                    break;
-                }
-            }
-            this.tempsTour = 30;
-        }
-
+        /// <summary>
+        /// Lance un nouveau tour du jeu en affichant le joueur actuel et le plateau au cours de la partie
+        /// </summary>
         private void LancerTour()
         {
-            if (!jeuEnCours) return;
-            chronometre = new Thread(ChronometreThread);
+            if (jeuEnCours)
+            {
+                Console.WriteLine($"\nC'est le tour de {joueurs[joueurActuelIndex].Nom}.");
 
-            
-            Console.WriteLine($"\n C'est le tour de {joueurs[joueurActuelIndex].Nom}.");
-            
-            // Afficher l'état actuel du plateau
-            Console.WriteLine("État actuel du plateau :");
-            Console.WriteLine(plateau.ToString());
-            chronometre.Start();
-            timerJeu.Start();
+                // Afficher l'état actuel du plateau
+                Console.WriteLine("État actuel du plateau :");
+                Console.WriteLine(plateau.ToString());
+
+                
+                timerJeu.Start(); // Démarrer la minuterie du tour
+
+
+            }
         }
 
-
+        /// <summary>
+        /// Cette fonction est appelée lorsque le temps imparti pour le tour d'un joueur est écoulé et elle arrete la minuterie puis affiche un message pour montrer que le temps est écoulé et passe au joueur suivant pour lance un nouveau tour
+        /// </summary>
+        /// <param name="timer">L'objet Timer qui a déclenché l'événement</param>
+        /// <param name="timersource">Les info sur la minuterie</param>
         private void OnTourTermine(Object timer, ElapsedEventArgs timersource)
         {
             timerJeu.Stop();
-            Console.WriteLine($"\n Temps écoulé pour {joueurs[joueurActuelIndex].Nom}!");
+
+            Console.WriteLine($"Temps écoulé pour {joueurs[joueurActuelIndex].Nom}!");
 
             joueurActuelIndex = (joueurActuelIndex + 1) % joueurs.Count;
 
             LancerTour();
         }
-
+        /// <summary>
+        /// Vérifie si le mot donné est appartient au dico et au plateau, si c'est le cas , la methode met à jour le score du joueur
+        /// </summary>
+        /// <param name="mot">Le mot donné par le joueur</param>
         public void SoumettreMot(string mot)
         {
             if (!jeuEnCours)
@@ -132,6 +138,16 @@ namespace ProjetAlgoMotGliss
             else
             {
                 Console.WriteLine("Mot non valide ou non présent sur le plateau.");
+            }
+        }
+        /// <summary>
+        /// Affiche les informations détaillées de chaque joueur participant au jeu.
+        /// </summary>
+        public void AfficherInfosJoueurs()
+        {
+            foreach (var joueur in joueurs)
+            {
+                Console.WriteLine(joueur.ToString());
             }
         }
     }
