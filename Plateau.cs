@@ -122,7 +122,7 @@ namespace ProjetAlgoMotGliss
             return result;
         }}
         /// <summary>
-        /// Recherche le mot sur le plateau en parcourant de bas en haut
+        /// Recherche le mot sur le plateau en parcourant de bas en haut et en commençant par la colonne de gauche
         /// </summary>
         /// <param name="mot">Le mot à rechercher sur le plateau</param>
         /// <returns>True si le mot est trouvé sinon False</returns>
@@ -150,13 +150,13 @@ namespace ProjetAlgoMotGliss
         /// <returns>True si le mot est trouvé sinon False</returns>
         private bool Recherche_Mot_Recursif(string mot, int motIndex, int x, int y)
         {
-            // Check if out of bounds or the cell doesn't match the current letter in the word.
+            // Vérifie que les conditions d'entrée sont correctes
             if (x < 0 || x >= lignes || y < 0 || y >= colonnes || matrice[x, y] != mot[motIndex])
             {
                 return false;
             }
 
-            // If the whole word is found.
+            // si le nombre de lettre correspond à la longueur du mot, on a trouvé
             if (motIndex == mot.Length - 1)
             {
                 matrice[x, y] = '#';
@@ -165,12 +165,12 @@ namespace ProjetAlgoMotGliss
                 return true;
             }
 
-            // Mark the current cell as visited.
+            // on marque la case du plateau avec la lettre trouvée
             char temp = matrice[x, y];
             matrice[x, y] = '#';
 
-            // Check all four directions.
-            bool found = Recherche_Mot_Recursif(mot, motIndex + 1, x - 1, y) || // à gauche
+            // on cherche la lettre suivante dans les cases adjacentes
+            bool trouve = Recherche_Mot_Recursif(mot, motIndex + 1, x - 1, y) || // à gauche
                           Recherche_Mot_Recursif(mot, motIndex + 1, x + 1, y) || // à droite
                           Recherche_Mot_Recursif(mot, motIndex + 1, x, y - 1) || // en bas 
                           Recherche_Mot_Recursif(mot, motIndex + 1, x, y + 1) ||  // en haut
@@ -180,11 +180,12 @@ namespace ProjetAlgoMotGliss
                           Recherche_Mot_Recursif(mot, motIndex + 1, x + 1, y - 1); // en bas à droite
 
 
-            // Unmark the cell before backtracking.
+            // On remet la valeur des cases à la bonne place
             matrice[x, y] = temp;
 
-            return found;
+            return trouve;
         }
+    
         /// <summary>
         /// Sauvegarde la configuration actuelle du plateau dans un fichier 
         /// </summary>
@@ -197,9 +198,10 @@ namespace ProjetAlgoMotGliss
                 {
                     for (int j = 0; j < colonnes; j++)
                     {
-                        file.Write(matrice[i, j] + (j == colonnes - 1 ? "" : ";"));
+                        file.Write(matrice[i, j] + (j == colonnes - 1 ? "" : ";"));//ajoute un ; sauf si c'est la dernière colonne,
+                                                                                    //auquel cas on n'ajoute rien
                     }
-                    file.WriteLine();
+                    file.WriteLine(); //saut de ligne pour passer à la ligne suivante
                 }
             }
         }
@@ -221,7 +223,7 @@ namespace ProjetAlgoMotGliss
                     else if (count > 0)
                     {
                         matrice[i + count, j] = matrice[i, j];
-                        matrice[i, j] = (char)('*'); // Nouvelle lettre aléatoire
+                        matrice[i, j] = (char)('*'); 
                     }
                 }
             }
